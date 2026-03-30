@@ -17,6 +17,7 @@ body {
   align-items: center;
 }
 
+/* CARDS */
 .card, .note {
   background: #fff;
   padding: 22px;
@@ -29,43 +30,19 @@ body {
 
 h1 { color: #ff2f92; }
 
-img.main {
-  width: 100%;
-  border-radius: 12px;
-  margin: 12px 0;
-}
-
+/* BUTTONS */
 .btn {
   border: none;
   padding: 12px 18px;
   border-radius: 999px;
   font-weight: 700;
   cursor: pointer;
-  margin: 6px;
+  margin-top: 10px;
 }
 
 .yes { background: #00b894; color: white; }
-.no  { background: #d63031; color: white; }
 
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.75);
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal {
-  background: #fff;
-  padding: 14px;
-  border-radius: 16px;
-  max-width: 300px;
-  text-align:center;
-}
-
-.note { display: none; text-align:left; }
-
+/* TYPING */
 #typedText::after {
   content: "|";
   animation: blink 1s infinite;
@@ -97,7 +74,7 @@ img.main {
   to { box-shadow: 0 0 20px rgba(255,47,146,0.6); }
 }
 
-/* FINAL IMAGES */
+/* IMAGES */
 .image-row {
   display: flex;
   gap: 8px;
@@ -123,42 +100,35 @@ img.main {
 
 <body>
 
-<!-- HEARTBEAT SOUND -->
+<!-- HEARTBEAT -->
 <audio id="heartbeat" src="heartbeat.mp3"></audio>
 
-<!-- START -->
-<div class="card" id="questionCard">
+<!-- INTRO SCREEN -->
+<div class="card" id="introCard">
+  <h1>Hey… 💔</h1>
+  <p>I made something for you…</p>
+  <p><strong>Please watch it till the end 🥺</strong></p>
+
+  <button class="btn yes" onclick="start()">Open 💌</button>
+</div>
+
+<!-- MAIN QUESTION -->
+<div class="card" id="questionCard" style="display:none;">
   <h1>Hey my Maggie 💔</h1>
-  <img src="start.jpg" class="main">
+  <img src="start.jpg" style="width:100%; border-radius:12px;">
   <p>I messed up… and I need to ask you something</p>
   <h2>Will you forgive me? 🥺</h2>
 
-  <button class="btn yes" onclick="onYes()">Yes ❤️</button>
-  <button class="btn no" onclick="onNo()">No 😔</button>
-</div>
-
-<!-- NO -->
-<div id="noPopup" class="overlay">
-  <div class="modal">
-    <p>Please… just hear me out once 🥺</p>
-    <button onclick="closeNo()">Okay</button>
-  </div>
-</div>
-
-<!-- YES -->
-<div id="yesPopup" class="overlay">
-  <div class="modal">
-    <p>Thank you for giving me a chance ❤️</p>
-    <button onclick="goToNote()">Read my apology 💌</button>
-  </div>
+  <button class="btn yes" onclick="goToNote()">Yes ❤️</button>
 </div>
 
 <!-- NOTE -->
-<div class="note" id="loveNote">
+<div class="note" id="loveNote" style="display:none; text-align:left;">
   <h2>To my dear Miyu 💌</h2>
 
   <p id="typedText"></p>
 
+  <!-- FINAL MESSAGE -->
   <div id="finalMessage" class="final-message">
     I treasure every bit of who you are. 
     I’m incredibly sorry for the way I acted and for causing you pain. 
@@ -166,35 +136,27 @@ img.main {
     I’m sorry.
   </div>
 
+  <!-- FINAL IMAGES -->
   <div id="finalImages" class="image-row">
     <img src="img1.jpg">
     <img src="img2.jpg">
   </div>
-
-  <br>
-  <button class="btn yes" onclick="back()">Back</button>
 </div>
 
 <script>
-function onYes() {
-  document.getElementById("yesPopup").style.display = "flex";
-}
-
-function onNo() {
-  document.getElementById("noPopup").style.display = "flex";
-}
-
-function closeNo() {
-  document.getElementById("noPopup").style.display = "none";
+// START FLOW
+function start() {
+  document.getElementById("introCard").style.display = "none";
+  document.getElementById("questionCard").style.display = "block";
 }
 
 function goToNote() {
-  document.getElementById("yesPopup").style.display = "none";
   document.getElementById("questionCard").style.display = "none";
   document.getElementById("loveNote").style.display = "block";
   startTyping();
 }
 
+// TEXT
 const text = `To my dear Miyu (Maggieee, Mei, my Moonpiee) 💖
 
 I made you fall… and because of me, you got hurt badly.
@@ -226,7 +188,7 @@ function startTyping() {
         document.getElementById("finalMessage").classList.add("show-final");
         document.getElementById("finalImages").classList.add("show-images");
 
-        // 💓 PLAY HEARTBEAT HERE
+        // HEARTBEAT
         const beat = document.getElementById("heartbeat");
         beat.volume = 0.4;
         beat.play();
@@ -235,15 +197,6 @@ function startTyping() {
     }
   }
   type();
-}
-
-function back() {
-  document.getElementById("loveNote").style.display = "none";
-  document.getElementById("questionCard").style.display = "block";
-  document.getElementById("typedText").innerHTML = "";
-  document.getElementById("finalMessage").classList.remove("show-final");
-  document.getElementById("finalImages").classList.remove("show-images");
-  i = 0;
 }
 </script>
 
